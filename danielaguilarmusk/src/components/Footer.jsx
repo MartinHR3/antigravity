@@ -67,9 +67,9 @@ const Footer = () => {
                     <div>
                         <h4 className="font-mono text-xs text-brand-accent uppercase tracking-widest mb-6">Conexión</h4>
                         <ul className="space-y-4">
-                            <li><a href="#" className="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Instagram</a></li>
-                            <li><a href="#" className="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Twitter / X</a></li>
-                            <li><a href="#" className="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Contacto</a></li>
+                            <li><a href="https://www.instagram.com/danielaguilarmusik/" target="_blank" rel="noreferrer" className="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Instagram</a></li>
+                            <li><a href="https://www.tiktok.com/@daniel_aguilarmusik" target="_blank" rel="noreferrer" className="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">TikTok</a></li>
+                            <li><a href="#" className="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">YouTube</a></li>
                         </ul>
                     </div>
 

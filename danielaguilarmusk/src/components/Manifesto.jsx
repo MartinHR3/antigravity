@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import manifestoImg from '../assets/img_daniel/639764487_17849551320683104_4273853012414652022_n.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,7 +64,7 @@ const Manifesto = () => {
                 <div className="order-1 lg:order-2 manifesto-img-container rounded-3xl md:rounded-[3rem] overflow-hidden h-[45vh] md:h-[60vh] lg:h-[80vh] w-full relative group shadow-2xl shadow-brand-accent/10">
                     <div
                         className="manifesto-img-inner absolute top-[-20%] left-0 w-full h-[140%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?q=80&w=2600&auto=format&fit=crop")' }}
+                        style={{ backgroundImage: `url(${manifestoImg})` }}
                     ></div>
                     <div className="absolute inset-0 bg-brand-main/40 mix-blend-multiply"></div>
                 </div>

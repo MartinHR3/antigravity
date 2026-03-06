@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import heroImg from '../assets/img_daniel/621783423_17843042169683104_9103661063162591784_n.webp';
 
 const Hero = () => {
     const containerRef = useRef(null);
@@ -37,7 +38,7 @@ const Hero = () => {
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
                 style={{
-                    backgroundImage: 'url("https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2600&auto=format&fit=crop")',
+                    backgroundImage: `url(${heroImg})`,
                 }}
             />
             <div className="absolute inset-0 z-10 bg-gradient-to-t from-brand-main via-brand-main/80 to-transparent" />

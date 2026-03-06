@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -18,14 +19,14 @@ const Navbar = () => {
                     ? 'bg-white/10 backdrop-blur-md border border-white/10 text-brand-text shadow-lg'
                     : 'bg-transparent text-white'}`}
         >
-            <div className="font-headings font-bold text-xl tracking-wide">
+            <Link to="/" className="font-headings font-bold text-xl tracking-wide">
                 danielaguilarmusk
-            </div>
+            </Link>
 
             <div className="hidden md:flex items-center gap-8 font-mono text-sm uppercase tracking-wider">
-                <a href="#music" className="hover:text-brand-accent transition-colors">Música</a>
-                <a href="#tour" className="hover:text-brand-accent transition-colors">Tour</a>
-                <a href="#store" className="hover:text-brand-accent transition-colors">Merch</a>
+                <Link to="/" className="hover:text-brand-accent transition-colors">Música</Link>
+                <Link to="/biografia" className="hover:text-brand-accent transition-colors">Biografía</Link>
+                <Link to="/calendario" className="hover:text-brand-accent transition-colors">Calendario</Link>
             </div>
 
             <button className={`px-6 py-2 rounded-full font-sans font-medium transition-all duration-300 magnetic-hover
