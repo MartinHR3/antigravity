@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Preloader from './components/Preloader';
 
 // Pages
 import Home from './pages/Home';
@@ -22,6 +23,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <main className="relative bg-brand-bg text-brand-text min-h-screen overflow-x-hidden w-full font-sans antialiased">
+        <Preloader />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

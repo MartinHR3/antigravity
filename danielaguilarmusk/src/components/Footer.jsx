@@ -52,7 +52,6 @@ const Footer = () => {
 
                 <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono opacity-40">
                     <p>© {new Date().getFullYear()} Daniel Aguilar. Todos los derechos reservados.</p>
-                    <p>Diseño 1:1 Píxel Perfecto</p>
                 </div>
             </footer>
         </>
