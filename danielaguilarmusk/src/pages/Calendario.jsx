@@ -66,7 +66,14 @@ const Calendario = () => {
                                 {show.date}
                             </span>
                             <div>
-                                <h3 className="font-headings text-2xl text-white mb-1 group-hover:text-brand-accent transition-colors">{show.city}</h3>
+                                <div className="flex items-center gap-3 mb-1">
+                                    <h3 className="font-headings text-2xl text-white group-hover:text-brand-accent transition-colors">{show.city}</h3>
+                                    {show.time && (
+                                        <span className="font-mono text-xs bg-brand-accent/10 border border-brand-accent/30 text-brand-accent px-3 py-1 rounded-full whitespace-nowrap">
+                                            {show.time}
+                                        </span>
+                                    )}
+                                </div>
                                 <p className="font-sans text-white/50">{show.venue}</p>
                             </div>
                         </div>

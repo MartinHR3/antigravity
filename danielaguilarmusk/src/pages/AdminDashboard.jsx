@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, writeBatch } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, writeBatch, updateDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { db, auth } from '../config/firebase';
-import { Trash2, Plus, LogOut, Calendar, MapPin, Map, GripVertical } from 'lucide-react';
+import { Trash2, Plus, LogOut, Calendar, MapPin, Map, GripVertical, Pencil, Clock } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const AdminDashboard = () => {
     const [shows, setShows] = useState([]);
-    const [newShow, setNewShow] = useState({ date: '', city: '', venue: '' });
+    const [newShow, setNewShow] = useState({ date: '', time: '', city: '', venue: '' });
+    const [editingId, setEditingId] = useState(null);
     const navigate = useNavigate();
 
     // Check auth
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
         return () => unsubscribe();
     }, []);
 
-    const handleAddShow = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!newShow.date || !newShow.city || !newShow.venue) return;
 
@@ -46,17 +47,48 @@ const AdminDashboard = () => {
             formattedDate = `${day}/${month}`;
         }
 
+        const showData = {
+            ...newShow,
+            date: formattedDate,
+            rawDate: newShow.date
+        };
+
         try {
-            // Assign new order at the end of the list
-            await addDoc(collection(db, 'shows'), {
-                ...newShow,
-                date: formattedDate,
-                order: shows.length
-            });
-            setNewShow({ date: '', city: '', venue: '' });
+            if (editingId) {
+                await updateDoc(doc(db, 'shows', editingId), showData);
+                setEditingId(null);
+            } else {
+                await addDoc(collection(db, 'shows'), {
+                    ...showData,
+                    order: shows.length
+                });
+            }
+            setNewShow({ date: '', time: '', city: '', venue: '' });
         } catch (error) {
-            console.error("Error adding document: ", error);
+            console.error("Error saving document: ", error);
         }
+    };
+
+    const handleEdit = (show) => {
+        let parsedDate = show.rawDate || '';
+        if (!parsedDate && show.date && show.date.includes('/')) {
+            const [d, m] = show.date.split('/');
+            parsedDate = `${new Date().getFullYear()}-${m}-${d}`;
+        }
+
+        setNewShow({
+            date: parsedDate,
+            time: show.time || '',
+            city: show.city || '',
+            venue: show.venue || ''
+        });
+        setEditingId(show.id);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const cancelEdit = () => {
+        setNewShow({ date: '', time: '', city: '', venue: '' });
+        setEditingId(null);
     };
 
     const handleDelete = async (id) => {
@@ -112,59 +144,83 @@ const AdminDashboard = () => {
                     </button>
                 </div>
 
-                {/* Formulario de agregar */}
+                {/* Formulario de agregar / editar */}
                 <div className="bg-[#0f172a] p-6 rounded-3xl border border-white/10 shadow-2xl mb-8">
-                    <h2 className="font-headings text-xl mb-6">Añadir nueva fecha</h2>
-                    <form onSubmit={handleAddShow} className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div className="relative">
-                            <input
-                                type="date"
-                                required
-                                value={newShow.date}
-                                onChange={(e) => setNewShow({ ...newShow, date: e.target.value })}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors text-white/80"
-                            />
+                    <h2 className="font-headings text-xl mb-6">{editingId ? 'Editar fecha publicada' : 'Añadir nueva fecha'}</h2>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                            <div className="relative">
+                                <input
+                                    type="date"
+                                    required
+                                    value={newShow.date}
+                                    onChange={(e) => setNewShow({ ...newShow, date: e.target.value })}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors text-white/80"
+                                />
+                            </div>
+                            <div className="relative">
+                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
+                                <input
+                                    type="time"
+                                    value={newShow.time || ''}
+                                    onChange={(e) => setNewShow({ ...newShow, time: e.target.value })}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors text-white/80"
+                                />
+                            </div>
+                            <div className="relative">
+                                <Map className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
+                                <input
+                                    type="text"
+                                    list="cities-list"
+                                    placeholder="Ciudad (ej. Madrid)"
+                                    required
+                                    value={newShow.city}
+                                    onChange={(e) => setNewShow({ ...newShow, city: e.target.value })}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
+                                />
+                            </div>
+                            <div className="relative">
+                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
+                                <input
+                                    type="text"
+                                    list="venues-list"
+                                    placeholder="Sala / Recinto"
+                                    required
+                                    value={newShow.venue}
+                                    onChange={(e) => setNewShow({ ...newShow, venue: e.target.value })}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
+                                />
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    type="submit"
+                                    className="flex-1 bg-brand-accent text-brand-bg rounded-xl font-bold uppercase tracking-widest text-xs py-3 flex items-center justify-center gap-2 hover:bg-white transition-colors"
+                                >
+                                    {editingId ? 'Guardar' : <><Plus size={16} /> Añadir</>}
+                                </button>
+                                {editingId && (
+                                    <button
+                                        type="button"
+                                        onClick={cancelEdit}
+                                        className="px-4 bg-white/10 text-white hover:bg-white/20 rounded-xl font-bold transition-colors"
+                                        title="Cancelar"
+                                    >
+                                        ✕
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                        <div className="relative">
-                            <Map className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
-                            <input
-                                type="text"
-                                list="cities-list"
-                                placeholder="Ciudad (ej. Madrid)"
-                                required
-                                value={newShow.city}
-                                onChange={(e) => setNewShow({ ...newShow, city: e.target.value })}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
-                            />
-                            <datalist id="cities-list">
-                                {[...new Set(shows.map(show => show.city))].map((city, idx) => (
-                                    <option key={idx} value={city} />
-                                ))}
-                            </datalist>
-                        </div>
-                        <div className="relative">
-                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
-                            <input
-                                type="text"
-                                list="venues-list"
-                                placeholder="Sala / Recinto"
-                                required
-                                value={newShow.venue}
-                                onChange={(e) => setNewShow({ ...newShow, venue: e.target.value })}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
-                            />
-                            <datalist id="venues-list">
-                                {[...new Set(shows.map(show => show.venue))].map((venue, idx) => (
-                                    <option key={idx} value={venue} />
-                                ))}
-                            </datalist>
-                        </div>
-                        <button
-                            type="submit"
-                            className="bg-brand-accent text-brand-bg rounded-xl font-bold uppercase tracking-widest text-xs py-3 flex items-center justify-center gap-2 hover:bg-white transition-colors"
-                        >
-                            <Plus size={16} /> Añadir
-                        </button>
+                        {/* Datalists ocultos */}
+                        <datalist id="cities-list">
+                            {[...new Set(shows.map(show => show.city))].map((city, idx) => (
+                                <option key={idx} value={city} />
+                            ))}
+                        </datalist>
+                        <datalist id="venues-list">
+                            {[...new Set(shows.map(show => show.venue))].map((venue, idx) => (
+                                <option key={idx} value={venue} />
+                            ))}
+                        </datalist>
                     </form>
                 </div>
 
@@ -210,16 +266,29 @@ const AdminDashboard = () => {
                                                                 {show.date}
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <span className="font-bold text-sm">{show.city}</span>
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="font-bold text-sm">{show.city}</span>
+                                                                    {show.time && <span className="text-xs bg-brand-accent/20 text-brand-accent px-2 py-0.5 rounded-full font-mono">{show.time}</span>}
+                                                                </div>
                                                                 <span className="text-xs text-white/50">{show.venue}</span>
                                                             </div>
                                                         </div>
-                                                        <button
-                                                            onClick={() => handleDelete(show.id)}
-                                                            className="p-3 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors ml-auto md:ml-0"
-                                                        >
-                                                            <Trash2 size={16} />
-                                                        </button>
+                                                        <div className="flex gap-2 ml-auto md:ml-0">
+                                                            <button
+                                                                onClick={() => handleEdit(show)}
+                                                                className="p-3 bg-white/10 text-white rounded-lg hover:bg-brand-accent hover:text-brand-bg transition-colors"
+                                                                title="Editar"
+                                                            >
+                                                                <Pencil size={16} />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDelete(show.id)}
+                                                                className="p-3 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                                                                title="Borrar"
+                                                            >
+                                                                <Trash2 size={16} />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </Draggable>
