@@ -38,10 +38,19 @@ const AdminDashboard = () => {
         e.preventDefault();
         if (!newShow.date || !newShow.city || !newShow.venue) return;
 
+        // Formatear fecha de YYYY-MM-DD a DD/MM
+        const parts = newShow.date.split('-');
+        let formattedDate = newShow.date; // fallback
+        if (parts.length === 3) {
+            const [, month, day] = parts;
+            formattedDate = `${day}/${month}`;
+        }
+
         try {
             // Assign new order at the end of the list
             await addDoc(collection(db, 'shows'), {
                 ...newShow,
+                date: formattedDate,
                 order: shows.length
             });
             setNewShow({ date: '', city: '', venue: '' });
