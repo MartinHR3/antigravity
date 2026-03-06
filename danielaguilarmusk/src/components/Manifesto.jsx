@@ -10,18 +10,6 @@ const Manifesto = () => {
 
     useEffect(() => {
         let ctx = gsap.context(() => {
-            // Parallax effect for the image
-            gsap.to(".manifesto-img-inner", {
-                yPercent: 30,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".manifesto-img-container",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-
             // Text reveal animation
             gsap.from(".reveal-text", {
                 y: 50,
@@ -60,13 +48,14 @@ const Manifesto = () => {
                     </div>
                 </div>
 
-                {/* Image Side with Parallax */}
-                <div className="order-1 lg:order-2 manifesto-img-container rounded-3xl md:rounded-[3rem] overflow-hidden h-[45vh] md:h-[60vh] lg:h-[80vh] w-full relative group shadow-2xl shadow-brand-accent/10">
-                    <div
-                        className="manifesto-img-inner absolute top-[-20%] left-0 w-full h-[140%] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: `url(${manifestoImg})` }}
-                    ></div>
-                    <div className="absolute inset-0 bg-brand-main/40 mix-blend-multiply"></div>
+                {/* Image Side - Static */}
+                <div className="order-1 lg:order-2 manifesto-img-container rounded-3xl md:rounded-[3rem] overflow-hidden shadow-2xl shadow-brand-accent/10 relative">
+                    <img
+                        src={manifestoImg}
+                        alt="Manifiesto"
+                        className="w-full h-auto object-cover max-h-[80vh]"
+                    />
+                    <div className="absolute inset-0 bg-brand-main/40 mix-blend-multiply pointer-events-none"></div>
                 </div>
 
             </div>

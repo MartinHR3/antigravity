@@ -18,7 +18,7 @@ const Biografia = () => {
                 ease: "power3.out"
             });
             gsap.from(".bio-img", {
-                scale: 0.95,
+                y: 40,
                 opacity: 0,
                 duration: 1.5,
                 ease: "power2.out",
@@ -38,7 +38,7 @@ const Biografia = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
-                <div className="bio-img rounded-[3rem] overflow-hidden aspect-[4/5] relative">
+                <div className="bio-img rounded-[3rem] overflow-hidden aspect-[4/5] relative transform-gpu [mask-image:radial-gradient(white,black)]">
                     <img
                         src={imgBio1}
                         alt="Daniel Aguilar Retrato"
@@ -80,7 +80,7 @@ const Biografia = () => {
                     </p>
                 </div>
 
-                <div className="bio-img rounded-3xl md:rounded-[3rem] border border-white/10 overflow-hidden aspect-[16/10] lg:aspect-square relative order-1 lg:order-2">
+                <div className="bio-img rounded-3xl md:rounded-[3rem] border border-white/10 overflow-hidden aspect-[16/10] lg:aspect-square relative order-1 lg:order-2 transform-gpu [mask-image:radial-gradient(white,black)]">
                     <img
                         src={imgBio2}
                         alt="Daniel Aguilar Live"
