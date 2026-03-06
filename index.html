@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Proyectos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #020617;
+            /* Fondo nocturno oscuro */
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #020617 70%);
+        }
+
+        .container {
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Tema Musical */
+        .card.music:hover {
+            border-color: rgba(20, 184, 166, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(20, 184, 166, 0.15);
+        }
+
+        .card.music h2 {
+            background: linear-gradient(135deg, #2dd4bf, #0d9488);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Tema OnlyBlack */
+        .card.black:hover {
+            border-color: rgba(217, 70, 239, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(217, 70, 239, 0.15);
+        }
+
+        .card.black h2 {
+            background: linear-gradient(135deg, #e879f9, #c026d3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            margin-top: auto;
+            align-self: center;
+            font-family: monospace;
+            letter-spacing: 0.5px;
+            color: #cbd5e1;
+        }
+
+        .hint {
+            margin-top: 4rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            color: #64748b;
+            font-size: 0.85rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hint code {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Directorio de Proyectos</h1>
+
+        <div class="grid">
+            <!-- Proyecto: Daniel Aguilar Musk -->
+            <a href="http://localhost:5174" class="card music" target="_blank" rel="noopener noreferrer">
+                <h2>danielaguilarmusk</h2>
+                <p>Landing page cinematográfica musical de alto impacto visual con GSAP.</p>
+                <div class="badge">Vite / React (Puerto: 5174)</div>
+            </a>
+
+            <!-- Proyecto: Only Black -->
+            <!-- Asumimos puerto genérico 5173 para OnlyBlack si se corre su dev server -->
+            <a href="http://localhost:5173" class="card black" target="_blank" rel="noopener noreferrer">
+                <h2>OnlyBlack</h2>
+                <p>Web cinematográfica premium en modo oscuro.</p>
+                <div class="badge">Vite / React (Puerto: 5173)</div>
+            </a>
+        </div>
+
+        <p class="hint">
+            <strong>Modo de Uso:</strong> Ambos proyectos están desarrollados en React con Vite. Abrirlos como archivos
+            planos (<code>file:///...</code>) mostrará una página en blanco.
+            <br><br>
+            Asegúrate de abrirlos en la terminal y ejecutar <code>npm run dev</code> en las carpetas respectivas. Por
+            defecto, Vite usará los puertos indicados.
+        </p>
+    </div>
+
+</body>
+
+</html>
