@@ -51,10 +51,10 @@ const Hero = () => {
                     </p>
 
                     <h1 className="flex flex-col mb-10 overflow-hidden leading-tight text-brand-text">
-                        <span className="hero-text font-headings font-bold text-5xl md:text-7xl xl:text-8xl tracking-tight text-white/90">
+                        <span className="hero-text font-headings font-bold text-4xl md:text-7xl xl:text-8xl tracking-tight text-white/90">
                             El sonido de una
                         </span>
-                        <span className="hero-text font-serif italic font-light text-6xl md:text-8xl xl:text-9xl text-white ml-0 md:ml-12 drop-shadow-xl mt-[-10px]">
+                        <span className="hero-text font-serif italic font-light text-5xl md:text-8xl xl:text-9xl text-white ml-0 md:ml-12 drop-shadow-xl mt-[-5px] md:mt-[-10px]">
                             nueva era.
                         </span>
                     </h1>

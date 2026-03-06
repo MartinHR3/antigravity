@@ -17,11 +17,11 @@ const Dashboard = () => {
     }, [items.length, messages.length]);
 
     return (
-        <section className="bg-brand-bg py-32 px-8">
+        <section className="bg-brand-bg py-20 md:py-32 px-6 md:px-8">
             <div className="max-w-6xl mx-auto">
-                <div className="mb-16">
-                    <h2 className="font-headings text-4xl md:text-5xl text-brand-text mb-4">Mesa de Mezclas</h2>
-                    <p className="font-mono text-brand-accent text-sm tracking-widest uppercase">
+                <div className="mb-12 md:mb-16">
+                    <h2 className="font-headings text-3xl md:text-5xl text-brand-text mb-4">Mesa de Mezclas</h2>
+                    <p className="font-mono text-brand-accent text-xs md:text-sm tracking-widest uppercase">
             // Estado actual del sistema musical
                     </p>
                 </div>

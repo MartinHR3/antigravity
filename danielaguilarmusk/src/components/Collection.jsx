@@ -68,44 +68,44 @@ const Collection = () => {
             {services.map((svc, i) => (
                 <div
                     key={i}
-                    className={`sticky-card sticky top-0 h-screen w-full flex items-center justify-center p-8
+                    className={`sticky-card sticky top-0 h-[100dvh] w-full flex items-center justify-center p-6 md:p-8
             ${i % 2 === 0 ? 'bg-brand-bg text-brand-text' : 'bg-brand-main text-white'}
           `}
                     style={{ zIndex: i }}
                 >
-                    <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
 
                         {/* Content Side */}
                         <div className="flex flex-col">
-                            <span className="font-mono text-5xl md:text-7xl opacity-20 mb-8 font-bold">
+                            <span className="font-mono text-4xl md:text-7xl opacity-20 mb-4 md:mb-8 font-bold">
                                 {svc.num}
                             </span>
 
-                            <h2 className="flex flex-col mb-8 overflow-hidden leading-tight">
-                                <span className="font-headings font-bold text-4xl md:text-6xl tracking-tight">
+                            <h2 className="flex flex-col mb-4 md:mb-8 overflow-hidden leading-tight">
+                                <span className="font-headings font-bold text-3xl md:text-6xl tracking-tight">
                                     {svc.namePart1}
                                 </span>
-                                <span className={`font-serif italic font-light text-5xl md:text-8xl mt-[-5px] ${i % 2 !== 0 ? 'text-brand-accent' : ''}`}>
+                                <span className={`font-serif italic font-light text-4xl md:text-8xl mt-[-2px] md:mt-[-5px] ${i % 2 !== 0 ? 'text-brand-accent' : ''}`}>
                                     {svc.namePart2}.
                                 </span>
                             </h2>
 
-                            <p className="font-sans text-xl md:text-2xl opacity-70 mb-12 max-w-lg leading-relaxed">
+                            <p className="font-sans text-lg md:text-2xl opacity-70 mb-8 md:mb-12 max-w-lg leading-relaxed">
                                 {svc.desc}
                             </p>
 
-                            <button className={`w-fit px-8 py-4 rounded-full font-sans font-bold text-sm tracking-widest uppercase transition-all magnetic-hover shadow-xl border
+                            <button className={`w-fit px-6 md:px-8 py-3 md:py-4 rounded-full font-sans font-bold text-xs md:text-sm tracking-widest uppercase transition-all magnetic-hover shadow-xl border
                 ${i % 2 === 0 ? 'bg-white text-brand-main hover:bg-brand-accent hover:border-brand-accent hover:text-brand-bg border-white/20' : 'bg-transparent border-white/30 text-white hover:bg-white hover:text-brand-main'}`}>
                                 Descubrir más
                             </button>
                         </div>
 
                         {/* Visual SVG Artefact Side */}
-                        <div className="flex justify-center items-center h-[400px] relative">
-                            <div className={`absolute w-[120%] h-[120%] bg-${svc.color}/5 rounded-full blur-[100px] animate-pulse`} />
-                            <div className={`p-16 rounded-[3rem] border backdrop-blur-sm
+                        <div className="flex justify-center items-center h-[200px] md:h-[400px] relative">
+                            <div className={`absolute w-[120%] h-[120%] bg-${svc.color}/5 rounded-full blur-[60px] md:blur-[100px] animate-pulse`} />
+                            <div className={`p-8 md:p-16 rounded-3xl md:rounded-[3rem] border backdrop-blur-sm
                 ${i % 2 === 0 ? 'bg-white/5 border-white/10' : 'bg-black/20 border-black/10'}`}>
-                                <svc.Icon size={120} strokeWidth={1} className={`animate-bounce duration-1000 ${i % 2 !== 0 ? 'text-brand-text' : 'text-brand-accent'}`} />
+                                <svc.Icon size={120} strokeWidth={1} className={`w-16 h-16 md:w-32 md:h-32 animate-bounce duration-1000 ${i % 2 !== 0 ? 'text-brand-text' : 'text-brand-accent'}`} />
                             </div>
                         </div>
 
