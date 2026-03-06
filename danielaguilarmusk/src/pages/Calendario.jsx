@@ -1,17 +1,30 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 const Calendario = () => {
     const containerRef = useRef(null);
-
-    const shows = [
-        { date: "15 OCT", city: "Las Palmas", venue: "The Paper Club" },
-        { date: "28 OCT", city: "Madrid", venue: "Sala El Sol" },
-        { date: "05 NOV", city: "Barcelona", venue: "Razzmatazz (Room 3)" },
-        { date: "12 NOV", city: "Tenerife", venue: "Aguere Cultural" }
-    ];
+    const [shows, setShows] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const q = query(collection(db, 'shows'), orderBy('date', 'asc'));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const showsData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setShows(showsData);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        if (loading || shows.length === 0) return;
+
         let ctx = gsap.context(() => {
             gsap.from(".show-row", {
                 y: 20,
@@ -22,7 +35,16 @@ const Calendario = () => {
             });
         }, containerRef);
         return () => ctx.revert();
-    }, []);
+    }, [shows, loading]);
+
+    if (loading) {
+        return (
+            <div className="pt-48 pb-32 px-6 md:px-8 max-w-5xl mx-auto min-h-[90vh] flex flex-col justify-center items-center">
+                <div className="w-12 h-12 border-4 border-brand-accent border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="font-mono text-brand-text/50 uppercase text-xs tracking-widest">Conectando con el booking...</p>
+            </div>
+        );
+    }
 
     return (
         <section ref={containerRef} className="pt-48 pb-32 px-6 md:px-8 max-w-5xl mx-auto min-h-[90vh]">

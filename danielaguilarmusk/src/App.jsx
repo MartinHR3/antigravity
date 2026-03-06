@@ -8,6 +8,8 @@ import Preloader from './components/Preloader';
 import Home from './pages/Home';
 import Biografia from './pages/Biografia';
 import Calendario from './pages/Calendario';
+import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
 
 // Controlo el scroll al top al cambiar de ruta
 const ScrollToTop = () => {
@@ -29,6 +31,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/biografia" element={<Biografia />} />
           <Route path="/calendario" element={<Calendario />} />
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
         <Footer />
       </main>
