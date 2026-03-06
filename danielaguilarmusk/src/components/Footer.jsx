@@ -4,31 +4,6 @@ import { ArrowRight } from 'lucide-react';
 const Footer = () => {
     return (
         <>
-            {/* Newsletter VIP Section */}
-            <section className="bg-brand-bg py-20 md:py-32 px-6 md:px-8 flex justify-center w-full min-h-[50vh] items-center">
-                <div className="max-w-4xl text-center">
-                    <h2 className="font-headings text-3xl md:text-5xl lg:text-7xl text-brand-text mb-6">
-                        Únete al Círculo VIP
-                    </h2>
-                    <p className="font-mono text-brand-accent/80 text-xs md:text-base mb-8 md:mb-12 uppercase tracking-widest max-w-xl mx-auto line-height-relaxed px-4">
-            // Material exclusivo. Eventos secretos. Antes que nadie.
-                    </p>
-
-                    <form className="relative max-w-md mx-auto flex items-center group w-full px-4 md:px-0">
-                        <input
-                            type="email"
-                            placeholder="tu@email.com"
-                            className="w-full bg-white/5 border border-white/10 rounded-full py-4 md:py-5 px-6 md:px-8 pr-16 text-brand-text font-mono text-sm focus:outline-none focus:border-brand-accent transition-colors"
-                        />
-                        <button
-                            type="submit"
-                            className="absolute right-6 md:right-2 p-3 bg-brand-accent text-brand-bg rounded-full hover:bg-white transition-colors magnetic-hover"
-                        >
-                            <ArrowRight size={20} />
-                        </button>
-                    </form>
-                </div>
-            </section>
 
             {/* Main Footer */}
             <footer className="bg-[#0f172a] rounded-t-3xl md:rounded-t-[4rem] text-brand-text py-16 md:py-20 px-6 md:px-8 relative overflow-hidden">
@@ -40,7 +15,7 @@ const Footer = () => {
 
                     {/* Brand Info */}
                     <div className="lg:col-span-2">
-                        <h3 className="font-headings font-bold text-2xl md:text-3xl mb-4 md:mb-6">danielaguilarmusk</h3>
+                        <h3 className="font-headings font-bold text-2xl md:text-3xl mb-4 md:mb-6">Daniel Aguilar</h3>
                         <p className="font-sans opacity-60 text-sm md:text-base max-w-sm mb-6 md:mb-8">
                             Músico y compositor. Sonido auténtico y vibrante en la intersección del club nocturno y el escenario principal.
                         </p>
@@ -76,7 +51,7 @@ const Footer = () => {
                 </div>
 
                 <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono opacity-40">
-                    <p>© {new Date().getFullYear()} danielaguilarmusk. Todos los derechos reservados.</p>
+                    <p>© {new Date().getFullYear()} Daniel Aguilar. Todos los derechos reservados.</p>
                     <p>Diseño 1:1 Píxel Perfecto</p>
                 </div>
             </footer>

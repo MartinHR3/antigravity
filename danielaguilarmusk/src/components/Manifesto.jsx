@@ -46,10 +46,10 @@ const Manifesto = () => {
                 <div className="flex flex-col gap-10 md:gap-12 order-2 lg:order-1">
                     <div className="reveal-text">
                         <h2 className="font-headings text-xl md:text-3xl lg:text-4xl text-white/40 mb-4 line-through decoration-brand-accent/50 decoration-2">
-                            La industria pregunta: ¿Cuál es el hit del verano?
+                            Un viaje desde Venezuela hasta Las Palmas
                         </h2>
                         <h3 className="font-serif italic text-3xl md:text-5xl lg:text-7xl text-brand-text leading-tight mt-6">
-                            Nosotros preguntamos: ¿Qué melodía te salvará hoy?
+                            Diez años persiguiendo el sonido perfecto.
                         </h3>
                     </div>
 

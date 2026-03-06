@@ -5,10 +5,10 @@ const Calendario = () => {
     const containerRef = useRef(null);
 
     const shows = [
-        { date: "15 OCT", city: "Las Palmas", venue: "The Paper Club", status: "SOLD OUT" },
-        { date: "28 OCT", city: "Madrid", venue: "Sala El Sol", status: "Tickets" },
-        { date: "05 NOV", city: "Barcelona", venue: "Razzmatazz (Room 3)", status: "Tickets" },
-        { date: "12 NOV", city: "Tenerife", venue: "Aguere Cultural", status: "Tickets" }
+        { date: "15 OCT", city: "Las Palmas", venue: "The Paper Club" },
+        { date: "28 OCT", city: "Madrid", venue: "Sala El Sol" },
+        { date: "05 NOV", city: "Barcelona", venue: "Razzmatazz (Room 3)" },
+        { date: "12 NOV", city: "Tenerife", venue: "Aguere Cultural" }
     ];
 
     useEffect(() => {
@@ -49,16 +49,7 @@ const Calendario = () => {
                             </div>
                         </div>
 
-                        <button
-                            className={`w-full md:w-auto px-8 py-3 rounded-full font-sans font-bold text-xs tracking-widest uppercase transition-all
-                                ${show.status === 'SOLD OUT'
-                                    ? 'bg-transparent border border-white/10 text-white/30 cursor-not-allowed'
-                                    : 'bg-brand-accent text-brand-bg hover:bg-white border border-transparent'
-                                }`}
-                            disabled={show.status === 'SOLD OUT'}
-                        >
-                            {show.status}
-                        </button>
+
                     </div>
                 ))}
             </div>

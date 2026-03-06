@@ -20,7 +20,7 @@ const Navbar = () => {
                     : 'bg-transparent text-white'}`}
         >
             <Link to="/" className="font-headings font-bold text-xl tracking-wide">
-                danielaguilarmusk
+                Daniel Aguilar
             </Link>
 
             <div className="hidden md:flex items-center gap-8 font-mono text-sm uppercase tracking-wider">
