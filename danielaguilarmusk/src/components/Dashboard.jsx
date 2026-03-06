@@ -31,13 +31,13 @@ const Dashboard = () => {
                     {/* Card 1: Classifier */}
                     <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-sm hover:bg-white/10 transition-colors">
                         <h3 className="font-mono text-xs text-white/50 mb-8 uppercase tracking-widest">Canales Activos</h3>
-                        <div className="h-24 relative overflow-hidden flex items-center">
+                        <div className="h-24 relative overflow-hidden">
                             <div
                                 className="absolute w-full transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                                style={{ transform: `translateY(${-activeItem * 100}%)` }}
+                                style={{ transform: `translateY(-${activeItem * (100 / items.length)}%)` }}
                             >
                                 {items.map((item, idx) => (
-                                    <div key={idx} className="h-full flex items-center py-4">
+                                    <div key={idx} className="h-24 flex items-center">
                                         <span className={`text-2xl md:text-3xl font-headings ${idx === activeItem ? 'text-brand-text' : 'text-white/30'}`}>
                                             {item}
                                         </span>
