@@ -26,15 +26,13 @@ function App() {
       <ScrollToTop />
       <main className="relative bg-brand-bg text-brand-text min-h-screen overflow-x-hidden w-full font-sans antialiased">
         <Preloader />
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/biografia" element={<Biografia />} />
-          <Route path="/calendario" element={<Calendario />} />
+          <Route path="/" element={<><Navbar /><Home /><Footer /></>} />
+          <Route path="/biografia" element={<><Navbar /><Biografia /><Footer /></>} />
+          <Route path="/calendario" element={<><Navbar /><Calendario /><Footer /></>} />
           <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
-        <Footer />
       </main>
     </Router>
   );

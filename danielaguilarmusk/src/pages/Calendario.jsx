@@ -9,7 +9,7 @@ const Calendario = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const q = query(collection(db, 'shows'), orderBy('date', 'asc'));
+        const q = query(collection(db, 'shows'), orderBy('order', 'asc'));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const showsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,

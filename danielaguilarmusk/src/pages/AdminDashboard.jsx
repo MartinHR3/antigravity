@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, writeBatch } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { db, auth } from '../config/firebase';
-import { Trash2, Plus, LogOut, Calendar, MapPin, Map } from 'lucide-react';
+import { Trash2, Plus, LogOut, Calendar, MapPin, Map, GripVertical } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const AdminDashboard = () => {
     const [shows, setShows] = useState([]);
@@ -20,7 +21,8 @@ const AdminDashboard = () => {
 
     // Fetch shows
     useEffect(() => {
-        const q = query(collection(db, 'shows'), orderBy('date', 'asc'));
+        // Query ordered by 'order' index, fallback to date if order doesn't exist
+        const q = query(collection(db, 'shows'), orderBy('order', 'asc'));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const showsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -37,7 +39,11 @@ const AdminDashboard = () => {
         if (!newShow.date || !newShow.city || !newShow.venue) return;
 
         try {
-            await addDoc(collection(db, 'shows'), newShow);
+            // Assign new order at the end of the list
+            await addDoc(collection(db, 'shows'), {
+                ...newShow,
+                order: shows.length
+            });
             setNewShow({ date: '', city: '', venue: '' });
         } catch (error) {
             console.error("Error adding document: ", error);
@@ -56,6 +62,29 @@ const AdminDashboard = () => {
 
     const handleLogout = () => {
         signOut(auth);
+    };
+
+    const handleOnDragEnd = async (result) => {
+        if (!result.destination) return; // Dropped outside the list
+
+        const items = Array.from(shows);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        // Optimistic UI update
+        setShows(items);
+
+        // Update all documents with their new 'order' index in a Firebase batch
+        try {
+            const batch = writeBatch(db);
+            items.forEach((item, index) => {
+                const docRef = doc(db, 'shows', item.id);
+                batch.update(docRef, { order: index });
+            });
+            await batch.commit();
+        } catch (error) {
+            console.error("Error reordering documents: ", error);
+        }
     };
 
     return (
@@ -79,37 +108,47 @@ const AdminDashboard = () => {
                     <h2 className="font-headings text-xl mb-6">Añadir nueva fecha</h2>
                     <form onSubmit={handleAddShow} className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="relative">
-                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
                             <input
-                                type="text"
-                                placeholder="15 OCT o 2024-10-15"
+                                type="date"
                                 required
                                 value={newShow.date}
                                 onChange={(e) => setNewShow({ ...newShow, date: e.target.value })}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors text-white/80"
                             />
                         </div>
                         <div className="relative">
                             <Map className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
                             <input
                                 type="text"
+                                list="cities-list"
                                 placeholder="Ciudad (ej. Madrid)"
                                 required
                                 value={newShow.city}
                                 onChange={(e) => setNewShow({ ...newShow, city: e.target.value })}
                                 className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
                             />
+                            <datalist id="cities-list">
+                                {[...new Set(shows.map(show => show.city))].map((city, idx) => (
+                                    <option key={idx} value={city} />
+                                ))}
+                            </datalist>
                         </div>
                         <div className="relative">
                             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
                             <input
                                 type="text"
+                                list="venues-list"
                                 placeholder="Sala / Recinto"
                                 required
                                 value={newShow.venue}
                                 onChange={(e) => setNewShow({ ...newShow, venue: e.target.value })}
                                 className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-colors"
                             />
+                            <datalist id="venues-list">
+                                {[...new Set(shows.map(show => show.venue))].map((venue, idx) => (
+                                    <option key={idx} value={venue} />
+                                ))}
+                            </datalist>
                         </div>
                         <button
                             type="submit"
@@ -120,7 +159,7 @@ const AdminDashboard = () => {
                     </form>
                 </div>
 
-                {/* Listado de Shows actuales */}
+                {/* Listado de Shows actuales con DND */}
                 <div className="bg-[#0f172a] p-6 rounded-3xl border border-white/10 shadow-2xl">
                     <h2 className="font-headings text-xl mb-6 flex justify-between items-center">
                         Tus conciertos publicados
@@ -132,27 +171,55 @@ const AdminDashboard = () => {
                             No hay fechas programadas actualmente.
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-3">
-                            {shows.map((show) => (
-                                <div key={show.id} className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/5 p-4 rounded-xl border border-white/5 hover:border-white/10 hover:bg-white/10 transition-colors gap-4">
-                                    <div className="flex gap-4 md:gap-8 w-full md:w-auto overflow-hidden">
-                                        <div className="font-headings text-lg md:text-xl text-brand-text whitespace-nowrap min-w-[80px]">
-                                            {show.date}
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <span className="font-bold text-sm">{show.city}</span>
-                                            <span className="text-xs text-white/50">{show.venue}</span>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={() => handleDelete(show.id)}
-                                        className="p-3 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors ml-auto md:ml-0"
+                        <DragDropContext onDragEnd={handleOnDragEnd}>
+                            <Droppable droppableId="shows-list">
+                                {(provided) => (
+                                    <div
+                                        className="flex flex-col gap-3"
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
                                     >
-                                        <Trash2 size={16} />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
+                                        {shows.map((show, index) => (
+                                            <Draggable key={show.id} draggableId={show.id} index={index}>
+                                                {(provided, snapshot) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        className={`flex flex-col md:flex-row justify-between items-start md:items-center p-4 rounded-xl border transition-all gap-4
+                                                            ${snapshot.isDragging
+                                                                ? 'bg-[#1e293b] border-brand-accent shadow-xl scale-[1.02] z-50'
+                                                                : 'bg-white/5 border-white/5 hover:border-white/10 hover:bg-white/10'}`}
+                                                    >
+                                                        <div className="flex gap-4 md:gap-8 w-full md:w-auto overflow-hidden items-center relative">
+                                                            <div
+                                                                {...provided.dragHandleProps}
+                                                                className="text-white/20 hover:text-white cursor-grab active:cursor-grabbing p-2 -ml-2 rounded-lg hover:bg-brand-bg/50 transition-colors"
+                                                            >
+                                                                <GripVertical size={20} />
+                                                            </div>
+                                                            <div className="font-headings text-lg md:text-xl text-brand-text whitespace-nowrap min-w-[80px]">
+                                                                {show.date}
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <span className="font-bold text-sm">{show.city}</span>
+                                                                <span className="text-xs text-white/50">{show.venue}</span>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => handleDelete(show.id)}
+                                                            className="p-3 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors ml-auto md:ml-0"
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     )}
                 </div>
             </div>
