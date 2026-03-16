@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = '/admin/dashboard.html';
+            window.location.href = './dashboard.html';
         } catch (err) {
             console.error(err);
             errorMessage.textContent = 'Credenciales incorrectas o error de conexión.';

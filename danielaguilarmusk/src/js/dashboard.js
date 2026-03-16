@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Auth Guard
     const unsubscribeAuth = auth.onAuthStateChanged((user) => {
         if (!user) {
-            window.location.href = '/admin/login.html';
+            window.location.href = './login.html';
         }
     });
 
