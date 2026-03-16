@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendario | Daniel Aguilar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+  <script type="module" crossorigin src="/antigravity/danielaguilarmusk/dist/assets/calendario-D_myhplA.js"></script>
+  <link rel="modulepreload" crossorigin href="/antigravity/danielaguilarmusk/dist/assets/index-BYiGy0QT.js">
+  <link rel="modulepreload" crossorigin href="/antigravity/danielaguilarmusk/dist/assets/lucide-Ddjmf5Sb.js">
+  <link rel="modulepreload" crossorigin href="/antigravity/danielaguilarmusk/dist/assets/index-ChjVQtCc.js">
+  <link rel="modulepreload" crossorigin href="/antigravity/danielaguilarmusk/dist/assets/firebase-wPzszKGM.js">
+  <link rel="stylesheet" crossorigin href="/antigravity/danielaguilarmusk/dist/assets/index-CkdH9YpU.css">
+</head>
+
+<body class="relative bg-brand-bg text-brand-text min-h-screen overflow-x-hidden w-full font-sans antialiased">
+    <!-- Preloader -->
+    <div id="preloader"
+        class="fixed inset-0 z-[9999] bg-[#020617] flex items-center justify-center flex-col origin-top">
+        <div class="overflow-hidden">
+            <h1 id="preloader-text"
+                class="font-headings text-4xl md:text-6xl text-white tracking-widest uppercase opacity-0 translate-y-8 scale-95">
+                Daniel Aguilar</h1>
+        </div>
+        <div class="absolute bottom-12 w-48 h-px bg-white/10 overflow-hidden">
+            <div class="h-full bg-brand-accent animate-[loading_2.5s_ease-in-out_infinite]"></div>
+        </div>
+        <style>
+            @keyframes loading {
+                0% {
+                    transform: translateX(-100%);
+                }
+
+                100% {
+                    transform: translateX(100%);
+                }
+            }
+        </style>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar"
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ease-in-out px-6 py-4 rounded-3xl md:rounded-full flex flex-col md:flex-row items-center justify-between w-[90%] max-w-5xl bg-transparent text-white">
+        <div class="flex justify-between items-center w-full md:w-auto">
+            <a href="/" class="font-headings font-bold text-xl tracking-wide">Daniel Aguilar</a>
+            <button id="mobile-menu-btn" class="md:hidden p-1 text-white hover:text-brand-accent transition-colors"
+                aria-label="Toggle menu">
+                <i data-lucide="menu" id="menu-icon"></i>
+            </button>
+        </div>
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8 font-mono text-sm uppercase tracking-wider">
+            <a href="/" class="hover:text-brand-accent transition-colors">Música</a>
+            <a href="/biografia.html" class="hover:text-brand-accent transition-colors">Biografía</a>
+            <a href="/calendario.html" class="hover:text-brand-accent transition-colors">Calendario</a>
+        </div>
+        <!-- Mobile Nav -->
+        <div id="mobile-menu"
+            class="md:hidden flex flex-col items-center gap-6 font-mono text-sm uppercase tracking-wider w-full overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0 py-0">
+            <a href="/" class="hover:text-brand-accent transition-colors w-full text-center py-2">Música</a>
+            <a href="/biografia.html"
+                class="hover:text-brand-accent transition-colors w-full text-center py-2">Biografía</a>
+            <a href="/calendario.html"
+                class="hover:text-brand-accent transition-colors w-full text-center py-2">Calendario</a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main id="app-content">
+        <section id="calendario-section" class="pt-48 pb-32 px-6 md:px-8 max-w-5xl mx-auto min-h-[90vh]">
+            <div class="mb-16">
+                <h1 class="font-headings text-5xl md:text-7xl text-brand-text mb-4">Agenda</h1>
+                <p class="font-mono text-brand-accent text-sm tracking-widest uppercase">// Próximos shows en vivo</p>
+            </div>
+
+            <!-- Loader -->
+            <div id="shows-loader" class="flex flex-col justify-center items-center py-20">
+                <div class="w-12 h-12 border-4 border-brand-accent border-t-transparent rounded-full animate-spin mb-4">
+                </div>
+                <p class="font-mono text-brand-text/50 uppercase text-xs tracking-widest">Conectando con el booking...
+                </p>
+            </div>
+
+            <!-- Shows Container -->
+            <div id="shows-container" class="flex flex-col gap-4 hidden">
+                <!-- Shows will be injected here via JS -->
+            </div>
+
+            <div
+                class="mt-16 p-8 rounded-3xl bg-brand-main border border-brand-accent/30 flex flex-col items-center text-center">
+                <h3 class="font-headings text-2xl text-white mb-4">¿Quieres que toque en tu ciudad?</h3>
+                <p class="font-sans text-white/60 mb-6 max-w-md">Envía tu propuesta a mi agencia de booking y miraremos
+                    poder montar algo increíble.</p>
+                <a href="mailto:booking@danielaguilarmusk.com"
+                    class="font-mono text-sm text-brand-accent underline hover:text-white transition-colors">booking@danielaguilarmusk.com</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-[#0f172a] rounded-t-3xl md:rounded-t-[4rem] text-brand-text py-16 md:py-20 px-6 md:px-8 relative overflow-hidden mt-auto">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-50">
+        </div>
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[50%] h-32 bg-brand-accent blur-[120px] opacity-10 rounded-full">
+        </div>
+
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 relative z-10">
+            <div class="lg:col-span-2">
+                <h3 class="font-headings font-bold text-2xl md:text-3xl mb-4 md:mb-6">Daniel Aguilar</h3>
+                <p class="font-sans opacity-60 text-sm md:text-base max-w-sm mb-6 md:mb-8">Músico y compositor. Sonido
+                    auténtico y vibrante en la intersección del club nocturno y el escenario principal.</p>
+                <div
+                    class="inline-flex items-center gap-3 px-4 py-2 bg-black/30 rounded-full border border-white/5 backdrop-blur-md">
+                    <div
+                        class="w-2.5 h-2.5 rounded-full bg-red-500 animate-[pulse_2s_infinite] drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]">
+                    </div>
+                    <span class="font-mono text-xs text-white/80 uppercase tracking-widest">Componiendo en
+                        Estudio</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-mono text-xs text-brand-accent uppercase tracking-widest mb-6">Plataformas</h4>
+                <ul class="space-y-4">
+                    <li><a href="#"
+                            class="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Spotify</a>
+                    </li>
+                    <li><a href="#"
+                            class="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Apple
+                            Music</a></li>
+                    <li><a href="#"
+                            class="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">YouTube</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-mono text-xs text-brand-accent uppercase tracking-widest mb-6">Conexión</h4>
+                <ul class="space-y-4">
+                    <li><a href="https://www.instagram.com/danielaguilarmusik/" target="_blank" rel="noreferrer"
+                            class="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">Instagram</a>
+                    </li>
+                    <li><a href="https://www.tiktok.com/@daniel_aguilarmusik" target="_blank" rel="noreferrer"
+                            class="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">TikTok</a>
+                    </li>
+                    <li><a href="#"
+                            class="font-sans opacity-70 hover:opacity-100 hover:text-brand-accent transition-colors">YouTube</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono opacity-40">
+            <p>© <span id="year"></span> Daniel Aguilar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

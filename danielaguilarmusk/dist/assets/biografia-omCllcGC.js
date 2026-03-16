@@ -1,0 +1,1 @@
+import"./index-BYiGy0QT.js";import{g as o}from"./index-ChjVQtCc.js";import"./lucide-Ddjmf5Sb.js";document.addEventListener("DOMContentLoaded",()=>{document.getElementById("biografia-section")&&setTimeout(()=>{o.from(".bio-text",{y:30,opacity:0,stagger:.15,duration:1,ease:"power3.out"}),o.from(".bio-img",{y:40,opacity:0,duration:1.5,ease:"power2.out",delay:.3})},500)});
